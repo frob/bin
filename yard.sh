@@ -9,5 +9,5 @@ if [ -z "$subscript" ] || [ ! -f "$bindirectory/$subscript.sh" ]; then
   echo 'Unknown command';
   [[ $PS1 ]] && return 2 || exit 2;
 else
-  . $bindirectory/$subscript.sh;
+  . $bindirectory/$subscript.sh "$@";
 fi
