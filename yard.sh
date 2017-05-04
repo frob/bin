@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Wrapper for Python helper scrips.
 
 subscript=$1
