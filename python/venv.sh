@@ -30,15 +30,7 @@ install () {
       exit 1;
     fi
   elif [ -f "requirements.unlocked.txt" ] && [ -f ".venv/bin/activate" ]; then
-    # Install requirements from unlocked requirements.
-    source .venv/bin/activate;
-    if pip install -r requirements.unlocked.txt; then
-      echo 'Requirments installed. Creating Freeze file: requirements.txt';
-      pip freeze > requirements.txt;
-    else
-      echo 'There was a problem installing requirements.';
-      exit 1;
-    fi
+    update
   else
     # Exit with an error if not in a venv.
     if [ ! -f ".venv/bin/activate" ]; then
@@ -53,11 +45,19 @@ install () {
   fi
 }
 
-# update () {
-#   # Install dependencies from requirements.dev.txt and update requirements.txt
-# pip install -U 'flask>=0.11'
-# https://pip.readthedocs.io/en/stable/reference/pip_install/#pip-install-examples
-# }
+update () {
+  if [ -f "requirements.unlocked.txt" ] && [ -f ".venv/bin/activate" ]; then
+    # Install requirements from unlocked requirements.
+    source .venv/bin/activate;
+    if pip install -r requirements.unlocked.txt; then
+      echo 'Requirments installed. Creating Freeze file: requirements.txt';
+      pip freeze > requirements.txt;
+    else
+      echo 'There was a problem installing requirements.';
+      exit 1;
+    fi
+  fi
+}
 
 # Check for command and run it if it exists.
 if [ -z "$op" ]; then
@@ -74,5 +74,11 @@ fi
 if [ "$op" == 'install' ]; then
   echo "Installing"
   install
+  exit 0;
+fi
+
+if [ "$op" == 'update' ]; then
+  echo "Updating"
+  update
   exit 0;
 fi
